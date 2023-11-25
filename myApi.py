@@ -20,8 +20,8 @@ LOG.info(f"DB file: {script_dir}\db.txt")
 
 @app.route('/')
 def index():
-    return jsonify({'name': 'knox',
-                    'email': 'knox@knoxsdata.com',
+    return jsonify({'name': 'carter',
+                    'email': 'carter@carterc.com',
                     'locale': 'https://youtube.com/c/dataknox'})
 
 # GET http://127.0.0.1:5000/routers?hostname=SW1
