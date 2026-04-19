@@ -10,13 +10,18 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t devops-lab:latest .'
+                sh '''
+                docker build -t devops-lab:${BUILD_NUMBER} .
+                docker tag devops-lab:${BUILD_NUMBER} devops-lab:latest
+                '''
             }
         }
 
         stage('Run Tests in Container') {
             steps {
-                sh 'docker run --rm devops-lab:latest pytest'
+                sh '''
+                docker run --rm devops-lab:${BUILD_NUMBER} pytest
+                '''
             }
         }
     }
