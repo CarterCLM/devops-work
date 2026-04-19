@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "No Chill API is running"
+    return "No Chill API v3 is running"
 
 @app.route("/health")
 def health():
