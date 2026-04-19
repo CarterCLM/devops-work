@@ -24,5 +24,15 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Deploy Container') {
+            steps {
+                sh '''
+                docker stop devops-app || true
+                docker rm devops-app || true
+                docker run -d -p 5001:5000 --name devops-app devops-lab:latest
+                '''
+            }
+        }
     }
 }
