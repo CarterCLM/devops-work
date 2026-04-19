@@ -41,6 +41,20 @@ pipeline {
             }
         }
 
+        stage('Deploy to AWS') {
+            steps {
+                sshagent(credentials: ['ec2-key']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ec2-user@54.86.239.51 << EOF
+                    docker rm -f devops-app || true
+                    docker pull clmcarter84/devops-lab:latest
+                    docker run -d -p 5000:5000 --name devops-app clmcarter84/devops-lab:latest
+                    EOF
+                    '''
+                }
+            }
+        }
+
         stage('Deploy Container') {
             steps {
                 sh '''
