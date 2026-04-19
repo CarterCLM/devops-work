@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout Code') {
@@ -12,10 +8,15 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Build Docker Image') {
             steps {
-                sh 'pip install pytest'
-                sh 'pytest'
+                sh 'docker build -t devops-lab:latest .'
+            }
+        }
+
+        stage('Run Tests in Container') {
+            steps {
+                sh 'docker run --rm devops-lab:latest pytest'
             }
         }
     }
