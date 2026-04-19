@@ -25,19 +25,6 @@ pipeline {
             }
         }
 
-        stage('Deploy Container') {
-            steps {
-                sh '''
-                docker stop devops-app || true
-                docker rm devops-app || true
-
-                docker ps -q --filter "publish=5001" | xargs -r docker stop
-                docker ps -aq --filter "publish=5001" | xargs -r docker rm
-
-                docker run -d -p 5001:5000 --name devops-app devops-lab:latest
-                '''
-            }
-        }
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(
@@ -51,6 +38,20 @@ pipeline {
                     docker push clmcarter84/devops-lab:latest
                     '''
                 }
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                sh '''
+                docker stop devops-app || true
+                docker rm devops-app || true
+
+                docker ps -q --filter "publish=5001" | xargs -r docker stop
+                docker ps -aq --filter "publish=5001" | xargs -r docker rm
+
+                docker run -d -p 5001:5000 --name devops-app devops-lab:latest
+                '''
             }
         }
     }
